@@ -18,16 +18,17 @@ const int LEFT = 5;
 const int UP = 6;
 const int DOWN = 7;
 
-const int simba_frames = 0;
-const int timon_frames =0;
-const int pumba_frames = 0;
-const int zazu_frames = 0;
-const int bear_frames = 0;
-const int hare_frames = 0;
-const int fox_frames = 0;
-const int wolf_frames = 0;
-const int hadgehog_frames = 0;
-const int owl_frames = 0;
+const int simba_frames = 7;
+const int pumba_frames = 5;
+const int timon_frames =9;
+const int zazu_frames = 10;
+const int hare_frames = 5;
+const int bear_frames = 4;
+const int fox_frames = 3;
+
+const int hedgehog_frames = 4;
+const int wolf_frames = 8;
+const int owl_frames = 6;
 
 const int DAY = 10;
 const int NIGHT = 100;
@@ -60,31 +61,25 @@ public:
     Sound sound;
 
     ANIMAL(String F_I, String F_S, float X, float Y, float A, float B, float W, float H);
-    ~ANIMAL();
+    //~ANIMAL();
     bool interactionWithMap(String zoo_map[], float time);
     bool update(float time, String zoo_map[]);
     bool control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames, int mode);
-    virtual void feed(int cage);
+    void feed(int cage);
 };
 
 class Day_Animal: public ANIMAL
 {
     public:
         const int sprite_num_frames = 0;
-        Day_Animal(String F_I, String F_S, float X, float Y, float A, float B, float W, float H) : ANIMAL(F_I, F_S, X, Y, A, B, W, H)
-        {
-            std::cout << "Day animals here!" << std::endl;
-        };
-        ~Day_Animal() {};
+        Day_Animal(String F_I, String F_S, float X, float Y, float A, float B, float W, float H) : ANIMAL(F_I, F_S, X, Y, A, B, W, H){};
 };
 
 
 class Night_Animal: public ANIMAL
 {
     public:
-        Night_Animal(String F_I, String F_S, float X, float Y, float A, float B, float W, float H) : ANIMAL(F_I, F_S, X, Y, A, B, W, H)
-        { std::cout << "Night animals here too!" << std::endl; };
-        ~Night_Animal() {};
+        Night_Animal(String F_I, String F_S, float X, float Y, float A, float B, float W, float H) : ANIMAL(F_I, F_S, X, Y, A, B, W, H) {};
 };
 
 //----------------------------Day_Animals:
