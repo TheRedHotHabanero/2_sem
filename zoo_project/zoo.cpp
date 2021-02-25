@@ -3,13 +3,6 @@
 #include "zoo.h"
 #include "zoo_map.h"
 
-/*
- * ANIMAL(fi, fs, std::vector<float> params, int cage_number)
- *
- * ANIMAL(1, 2, {3, 432,32 ,32}, 3)
- *
- */
-
 ANIMAL::ANIMAL(String F_I, String F_S, float X, float Y, float A, float B, float W, float H)
 {
     File_I = F_I;
@@ -23,22 +16,10 @@ ANIMAL::ANIMAL(String F_I, String F_S, float X, float Y, float A, float B, float
     a = A; b = B;
     w = W; h = H;
     sprite.setTextureRect(IntRect(a, b, w, h));
-};
-
-ANIMAL::~ANIMAL()
-{
-
 }
 
-void ANIMAL::talk()
-{
-    sound.play();
-}
-
-//void ANIMAL:: feed(int cage_number)
-//{
-//    if ((Keyboard::isKeyPressed(Keyboard:: )))
-//}
+void ANIMAL::feed(int cage_number)
+{ sound.play();}
 
 
 bool ANIMAL::interactionWithMap(String zoo_map[], float time)
@@ -89,10 +70,15 @@ bool ANIMAL::update(float time, String zoo_map[])
     return interactionWithMap(zoo_map, time);
 }
 
-bool ANIMAL::control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames)
+bool ANIMAL::control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames, int mode)
 {
     ANIMAL.direction = dir;
-    ANIMAL.speed = 0.00;
+
+    if (mode == DAY)
+        ANIMAL.speed = 0.06;
+    else if (mode == NIGHT)
+        ANIMAL.speed = 0.00;
+
     CurrentFrame += 0.1f * time;
 
     CurrentFrame = CurrentFrame > sprite_num_frames ? 0 : CurrentFrame;
@@ -146,7 +132,7 @@ void draw_map(Sprite& s_map, RenderWindow& window, Sprite& pumbasprite,
 
 void zoo_run(RenderWindow& window)
 {
-    Image map_image;       map_image.loadFromFile("../Images/map.png");
+    Image map_image;      map_image.loadFromFile("../Images/map.png");
     Texture map;          map.loadFromImage(map_image);
     Sprite s_map;         s_map.setTexture(map);
 
@@ -156,9 +142,9 @@ void zoo_run(RenderWindow& window)
     float CurrentFrame = 0;
     Clock clock;
 
-    int counter = 0;
-    int dir_pumba = DOWN;
-    int dir_timon = UP;
+    long long int counter = 0;
+    int dir = DOWN;
+    int mode  = DAY;
     while (window.isOpen())
     {
         ++counter;
@@ -171,13 +157,42 @@ void zoo_run(RenderWindow& window)
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
 
+            if (event.type == sf::Event::KeyPressed)
+                switch (event.key.code)
+                {
+                    case Keyboard::Num0 : { simba.feed(0); break;}
+                    case Keyboard::Num1 : { pumba.feed(1); break;}
+                    case Keyboard::Num2 : { timon.feed(2); break;}
+                    case Keyboard::Num3 : { zazu.feed(3); break;}
+                    case Keyboard::Num4 : { hare.feed(4); break;}
+                    case Keyboard::Num5 : { bear.feed(5); break;}
+                    case Keyboard::Num6 : { fox.feed(6); break;}
+                    case Keyboard::Num7 : { hedgehog.feed(7); break;}
+                    case Keyboard::Num8 : { wolf.feed(8); break;}
+                    case Keyboard::Num9 : { owl.feed(9); break;}
+                    default: break;
+                }
+
         if (counter % 700 == 0)
-        {
-            dir_pumba = std::rand() % 4 + 4;
-            dir_timon = std::rand() % 4 + 4;
-        }
-        //control_pumba(pumba, time, CurrentFrame, dir_pumba, zoo_map);
-        //control_timon(timon, time, CurrentFrame, dir_timon, zoo_map);
+            dir = std::rand() % 4 + 4;
+
+        if (counter % mode_master == 0)
+            if (mode == DAY)
+                mode = NIGHT;
+            else
+                mode = DAY;
+
+        pumba.control(pumba, time, CurrentFrame, dir, zoo_map, mode);
+        timon.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
+        simba.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
+        zazu.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
+        bear.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
+        fox.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
+        hare.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
+
+        owl.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
+        wolf.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
+        hedgehog.control(timon, time, CurrentFrame, (dir + cage) % 4 + 4, zoo_map, mode);
 
         //-------------------------------------------------------------------------------
         window.clear();
@@ -323,6 +338,7 @@ int main()
 {
     RenderWindow window(VideoMode(1200, 745), "ZOO HOME");
     menu(window);
+    
 
     return 0;
 }
