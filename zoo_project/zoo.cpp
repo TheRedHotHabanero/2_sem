@@ -1,12 +1,24 @@
+#include <iostream>
+
 #include "zoo.h"
 #include "zoo_map.h"
 
-ANIMAL::ANIMAL(String F, float X, float Y, float A, float B, float W, float H)
+/*
+ * ANIMAL(fi, fs, std::vector<float> params, int cage_number)
+ *
+ * ANIMAL(1, 2, {3, 432,32 ,32}, 3)
+ *
+ */
+
+ANIMAL::ANIMAL(String F_I, String F_S, float X, float Y, float A, float B, float W, float H)
 {
-    File = F;
-    image.loadFromFile("../Images/" + File);
+    File_I = F_I;
+    File_S = F_S;
+    image.loadFromFile("../Images/" + File_I);
     texture.loadFromImage(image);
     sprite.setTexture(texture);
+    buffer.loadFromFile("../Sound/" + File_S);
+    sound.setBuffer(buffer);
     x = X; y = Y;
     a = A; b = B;
     w = W; h = H;
@@ -18,22 +30,33 @@ ANIMAL::~ANIMAL()
 
 }
 
+void ANIMAL::talk()
+{
+    sound.play();
+}
+
+//void ANIMAL:: feed(int cage_number)
+//{
+//    if ((Keyboard::isKeyPressed(Keyboard:: )))
+//}
+
+
 bool ANIMAL::interactionWithMap(String zoo_map[], float time)
 {
     for (int i = y / 34; i < (y + h) / 34; ++i)
-    for (int j = x / 32; j < (x + w) / 32; ++j)
-    switch (zoo_map[i][j])
-    {
-        case 'y':
-        case 'x':
-            x -= dx * time;
-            y -= dy * time;
-            sprite.setPosition(x, y);
-            break;
+        for (int j = x / 32; j < (x + w) / 32; ++j)
+            switch (zoo_map[i][j])
+            {
+                case 'y':
+                case 'x':
+                    x -= dx * time;
+                    y -= dy * time;
+                    sprite.setPosition(x, y);
+                    break;
 
-        default:
-        break;
-    }
+                default:
+                    break;
+            }
     return false;
 }
 
@@ -66,7 +89,7 @@ bool ANIMAL::update(float time, String zoo_map[])
     return interactionWithMap(zoo_map, time);
 }
 
-bool control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames)
+bool ANIMAL::control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames)
 {
     ANIMAL.direction = dir;
     ANIMAL.speed = 0.00;
@@ -77,63 +100,16 @@ bool control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zo
     switch (dir)
     {
         case UP:
-        case RIGHT: ANIMAL.sprite.setTextureRect(IntRect(38 * int(CurrentFrame) + 6, 150, 40, 40));
+        case RIGHT: ANIMAL.sprite.setTextureRect(IntRect(a * int(CurrentFrame) + 6, b, w, h));
             break;
 
         case DOWN:
-        case LEFT: ANIMAL.sprite.setTextureRect(IntRect(38 * int(CurrentFrame + 1) + 6, 150, -40, 40));
+        case LEFT: ANIMAL.sprite.setTextureRect(IntRect(a * int(CurrentFrame + 1) + 6, b, w, h));
             break;
     }
 
     return (ANIMAL.update(time, zoo_map));
 }
-
-
-//-------------------------------------------------------------! MOVING SIMBA!
-bool control_pumba(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[])
-{
-    ANIMAL.direction = dir;
-    ANIMAL.speed = 0.00;
-    CurrentFrame += 0.1f * time;
-
-    CurrentFrame = CurrentFrame > 5 ? 0 : CurrentFrame;
-
-    switch (dir)
-    {
-        case UP:
-        case RIGHT: ANIMAL.sprite.setTextureRect(IntRect(38 * int(CurrentFrame) + 6, 150, 40, 40));
-            break;
-
-        case DOWN:
-        case LEFT: ANIMAL.sprite.setTextureRect(IntRect(38 * int(CurrentFrame + 1) + 6, 150, -40, 40));
-            break;
-    }
-
-    return (ANIMAL.update(time, zoo_map));
-}
-
-bool control_timon(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[])
-{
-    ANIMAL.direction = dir;
-    ANIMAL.speed = 0.00;
-    CurrentFrame += 0.1f * time;
-
-    CurrentFrame = CurrentFrame > 9 ? 0 : CurrentFrame;
-
-    switch (dir)
-    {
-        case UP:
-        case RIGHT: ANIMAL.sprite.setTextureRect(IntRect(37 * int(CurrentFrame) + 360, 600, 37, 51));
-            break;
-        case DOWN:
-        case LEFT:  ANIMAL.sprite.setTextureRect(IntRect(37 * int(CurrentFrame + 1) + 360, 600, -37, 51));
-            break;
-        default:    break;
-    }
-
-    return (ANIMAL.update(time, zoo_map));
-}
-
 
 //.................DRAWING MAP......................//
 void draw_map(Sprite& s_map, RenderWindow& window, Sprite& pumbasprite,
@@ -170,12 +146,12 @@ void draw_map(Sprite& s_map, RenderWindow& window, Sprite& pumbasprite,
 
 void zoo_run(RenderWindow& window)
 {
-    Image map_image;      map_image.loadFromFile("../Images/map.png");
+    Image map_image;       map_image.loadFromFile("../Images/map.png");
     Texture map;          map.loadFromImage(map_image);
     Sprite s_map;         s_map.setTexture(map);
 
-    ANIMAL pumba("../Images/characters/pumba.png", 100, 200, 0, 500, 42, 58);
-    ANIMAL timon("../Images/characters/timon.png", 300, 560, 0, 500, 4, 66);
+    //ANIMAL pumba("characters/pumba.png", 100, 200, 0, 500, 42, 58);
+    //ANIMAL timon("characters/timon.png", 300, 560, 0, 500, 4, 66);
 
     float CurrentFrame = 0;
     Clock clock;
@@ -200,12 +176,12 @@ void zoo_run(RenderWindow& window)
             dir_pumba = std::rand() % 4 + 4;
             dir_timon = std::rand() % 4 + 4;
         }
-        control_pumba(pumba, time, CurrentFrame, dir_pumba, zoo_map);
-        control_timon(timon, time, CurrentFrame, dir_timon, zoo_map);
+        //control_pumba(pumba, time, CurrentFrame, dir_pumba, zoo_map);
+        //control_timon(timon, time, CurrentFrame, dir_timon, zoo_map);
 
         //-------------------------------------------------------------------------------
         window.clear();
-        draw_map(s_map, window, pumba.sprite, timon.sprite, zoo_map);
+        //draw_map(s_map, window, pumba.sprite, timon.sprite, zoo_map);
     }
 }
 
@@ -266,7 +242,7 @@ void menu(RenderWindow& window)
     Sprite    runsprite;       runsprite.setTexture(runtexture);
     runsprite.setPosition(275, 250);
 
-   //-------------------------------------------------------level made
+    //-------------------------------------------------------level made
 
     Image     exitgame;           exitgame.loadFromFile("../Images/menu/exit.png");
     Texture   exitgametexture;    exitgametexture.loadFromImage(exitgame);
