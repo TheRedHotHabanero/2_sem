@@ -28,14 +28,15 @@ const int zazu_frames = 10;
 const int hare_frames = 5;
 const int bear_frames = 4;
 const int fox_frames = 3;
+
 const int hedgehog_frames = 4;
 const int wolf_frames = 8;
 const int owl_frames = 6;
 
 //---------------------mode_manager:
+bool mode = true;
 bool DAY = true;
 bool NIGHT = false;
-const long long int mode_master = 5000000;
 
 
 
@@ -66,7 +67,7 @@ public:
     ANIMAL(String F_I, String F_S, float X, float Y, float A, float B, float W, float H);
     bool interactionWithMap(String zoo_map[], float time);
     bool update(float time, String zoo_map[]);
-    bool control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames, int mode);
+    bool control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames, bool mode = DAY);
     void feed(int cage);
 };
 

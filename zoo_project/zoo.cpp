@@ -78,7 +78,7 @@ bool ANIMAL::update(float time, String zoo_map[])
     return interactionWithMap(zoo_map, time);
 }
 
-bool ANIMAL::control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames, int mode)
+bool ANIMAL::control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, String zoo_map[], int sprite_num_frames, bool mode)
 {
     ANIMAL.direction = dir;
 
@@ -209,12 +209,14 @@ void zoo_run(RenderWindow& window)
         if (counter % 700 == 0)
             dir = std::rand() % 4 + 4;
 
-        if (counter % mode_master == 0)
-            if (mode == DAY)
-                mode = NIGHT;
-            else
+        if (counter % 9000 ==0)
+        {
+            int help_mode = std::rand() % 2;
+            if (help_mode == 1)
                 mode = DAY;
-
+            else
+                mode = NIGHT;
+        }
 
         pumba.control(pumba, time, CurrentFrame, dir, zoo_map, pumba_frames, mode);
         timon.control(timon, time, CurrentFrame, (dir + 1 ) % 4 + 4, zoo_map, timon_frames,  mode);
