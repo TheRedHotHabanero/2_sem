@@ -30,8 +30,8 @@ const int hedgehog_frames = 4;
 const int wolf_frames = 8;
 const int owl_frames = 6;
 
-const int DAY = 10;
-const int NIGHT = 100;
+bool DAY = true;
+bool NIGHT = false;
 const long long int mode_master = 5000000;
 
 
@@ -71,8 +71,8 @@ public:
 class Day_Animal: public ANIMAL
 {
     public:
-        const int sprite_num_frames = 0;
-        Day_Animal(String F_I, String F_S, float X, float Y, float A, float B, float W, float H) : ANIMAL(F_I, F_S, X, Y, A, B, W, H){};
+        //const int sprite_num_frames = 0;
+        Day_Animal(String F_I, String F_S, float X, float Y, float A, float B, float W, float H) : ANIMAL(F_I, F_S, X, Y, A, B, W, H) {};
 };
 
 
