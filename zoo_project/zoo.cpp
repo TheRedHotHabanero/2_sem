@@ -12,9 +12,11 @@ ANIMAL::ANIMAL(String F_I, String F_S, float X, float Y, float A, float B, float
     sprite.setTexture(texture);
     buffer.loadFromFile("../Sound/" + File_S);
     sound.setBuffer(buffer);
+
     x = X; y = Y;
     a = A; b = B;
     w = W; h = H;
+
     sprite.setTextureRect(IntRect(a, b, w, h));
 }
 
@@ -47,19 +49,23 @@ bool ANIMAL::update(float time, String zoo_map[])
 {
     switch (direction)
     {
-        case DOWN: dx = 0;
+        case DOWN:
+            dx = 0;
             dy = speed;
             break;
 
-        case UP:   dx = 0;
+        case UP:
+            dx = 0;
             dy = -speed;
             break;
 
-        case RIGHT:dx = speed;
+        case RIGHT:
+            dx = speed;
             dy = 0;
             break;
 
-        case LEFT: dx = -speed;
+        case LEFT:
+            dx = -speed;
             dy = 0;
             break;
     }
@@ -88,11 +94,13 @@ bool ANIMAL::control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, S
     switch (dir)
     {
         case UP:
-        case RIGHT: ANIMAL.sprite.setTextureRect(IntRect(w * int(CurrentFrame) + a, b, w, h));
+        case RIGHT:
+            ANIMAL.sprite.setTextureRect(IntRect(w * int(CurrentFrame) + a, b, w, h));
             break;
 
         case DOWN:
-        case LEFT: ANIMAL.sprite.setTextureRect(IntRect(w * int(CurrentFrame + 1) + a, b, w, h));
+        case LEFT:
+            ANIMAL.sprite.setTextureRect(IntRect(w * int(CurrentFrame + 1) + a, b, w, h));
             break;
     }
 
@@ -100,10 +108,10 @@ bool ANIMAL::control(ANIMAL& ANIMAL, float time, float& CurrentFrame, int dir, S
 }
 
 //.................DRAWING MAP......................//
-void draw_map(Sprite& s_map, RenderWindow& window, Sprite& pumbasprite, Sprite& timonsprite, Sprite& zazusprite,
-              Sprite& bearsprite, Sprite& simbasprite, Sprite& foxsprite,
-              Sprite& owlsprite, Sprite& wolfsprite,
-              Sprite& hedgehogsprite, Sprite& haresprite, String zoo_map[])
+void draw_map(Sprite& s_map, RenderWindow& window, Sprite& pumbasprite,
+              Sprite& timonsprite, Sprite& zazusprite, Sprite& bearsprite,
+              Sprite& simbasprite, Sprite& foxsprite, Sprite& owlsprite,
+              Sprite& wolfsprite, Sprite& hedgehogsprite, Sprite& haresprite, String zoo_map[])
 {
     for (int i = 0; i < HEIGHT_MAP; i++)
         for (int j = 0; j < WIDTH_MAP; j++)
@@ -220,9 +228,10 @@ void zoo_run(RenderWindow& window)
         wolf.control(timon, time, CurrentFrame, (dir + 7) % 4 + 4, zoo_map, wolf_frames, !mode);
         hedgehog.control(timon, time, CurrentFrame, (dir + 8) % 4 + 4, zoo_map, hedgehog_frames, !mode);
 
-        //-------------------------------------------------------------------------------
         window.clear();
-        draw_map(s_map, window, pumba.sprite, timon.sprite, zazu.sprite, bear.sprite, simba.sprite, fox.sprite, owl.sprite, wolf.sprite, hedgehog.sprite, hare.sprite, zoo_map);
+        draw_map(s_map, window, pumba.sprite, timon.sprite, zazu.sprite, bear.sprite,
+                 simba.sprite, fox.sprite, owl.sprite, wolf.sprite, hedgehog.sprite,
+                 hare.sprite, zoo_map);
     }
 }
 
@@ -233,14 +242,14 @@ void run_about(RenderWindow& window)
     Image     back;             back.loadFromFile("../Images/info/back.jpg");
     Texture   backtexture;      backtexture.loadFromImage(back);
     Sprite    backsprite;       backsprite.setTexture(backtexture);
-    backsprite.setPosition(0, 0);
+                                backsprite.setPosition(0, 0);
 
     //------------------------------------------------------background
 
     Image     text;             text.loadFromFile("../Images/info/Text.jpg");
     Texture   texttexture;      texttexture.loadFromImage(text);
     Sprite    textsprite;       textsprite.setTexture(texttexture);
-    textsprite.setPosition(70, 50);
+                                textsprite.setPosition(70, 50);
 
     //-------------------------------------------------------text
 
@@ -271,31 +280,31 @@ void menu(RenderWindow& window)
 
     //-----------------------------------------------------icon made
 
-    Image     menubackground;     menubackground.loadFromFile("../Images/menu/menu.jpg");
-    Texture   menutexture;        menutexture.loadFromImage(menubackground);
-    Sprite    menusprite;         menusprite.setTexture(menutexture);
-    menusprite.setPosition(0, 0);
+    Image     menubackground;       menubackground.loadFromFile("../Images/menu/menu.jpg");
+    Texture   menutexture;          menutexture.loadFromImage(menubackground);
+    Sprite    menusprite;           menusprite.setTexture(menutexture);
+                                    menusprite.setPosition(0, 0);
 
     //-------------------------------------------------background made
 
-    Image     run;             run.loadFromFile("../Images/menu/run.png");
-    Texture   runtexture;      runtexture.loadFromImage(run);
-    Sprite    runsprite;       runsprite.setTexture(runtexture);
-    runsprite.setPosition(275, 250);
+    Image     run;              run.loadFromFile("../Images/menu/run.png");
+    Texture   runtexture;       runtexture.loadFromImage(run);
+    Sprite    runsprite;        runsprite.setTexture(runtexture);
+                                runsprite.setPosition(275, 250);
 
     //-------------------------------------------------------level made
 
-    Image     exitgame;           exitgame.loadFromFile("../Images/menu/exit.png");
-    Texture   exitgametexture;    exitgametexture.loadFromImage(exitgame);
-    Sprite    exitgamesprite;     exitgamesprite.setTexture(exitgametexture);
-    exitgamesprite.setPosition(275, 450);
+    Image     exitgame;             exitgame.loadFromFile("../Images/menu/exit.png");
+    Texture   exitgametexture;      exitgametexture.loadFromImage(exitgame);
+    Sprite    exitgamesprite;       exitgamesprite.setTexture(exitgametexture);
+                                    exitgamesprite.setPosition(275, 450);
 
     //-------------------------------------------------exit made
 
-    Image     info;           info.loadFromFile("../Images/menu/about.png");
-    Texture   infotexture;    infotexture.loadFromImage(info);
-    Sprite    infosprite;     infosprite.setTexture(infotexture);
-    infosprite.setPosition(1100, 10);
+    Image     info;             info.loadFromFile("../Images/menu/about.png");
+    Texture   infotexture;      infotexture.loadFromImage(info);
+    Sprite    infosprite;       infosprite.setTexture(infotexture);
+                                infosprite.setPosition(1100, 10);
 
     //-------------------------------------------------about made
 
@@ -324,25 +333,30 @@ void menu(RenderWindow& window)
         {
             switch (menuNum)
             {
-                case ZOO_RUN: {
+                case ZOO_RUN:
+                {
                     RenderWindow new_window(VideoMode(1200, 675), "ZOO");
                     window.close();
                     zoo_run(new_window);
-                    break;                                                                           }
+                    break;
+                }
 
-                case INFO: {
+                case INFO:
+                {
                     RenderWindow new_window(VideoMode(1600, 900), "ZOO INFO");
                     window.close();
                     run_about(new_window);
-                    break;                                                                           }
+                    break;
+                }
 
-                case EXIT: {
+                case EXIT:
                     window.close();
-                    break;                                                                           }
+                    break;
 
                 default:
                     break;
             }
+
             if (menuNum >= ZOO_RUN && menuNum <= INFO)
             {
                 RenderWindow after_window(VideoMode(1200, 745), "ZOO HOME");
@@ -364,7 +378,6 @@ int main()
 {
     RenderWindow window(VideoMode(1200, 745), "ZOO HOME");
     menu(window);
-
 
     return 0;
 }
