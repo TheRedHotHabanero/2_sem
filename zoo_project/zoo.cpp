@@ -138,12 +138,12 @@ void draw_map(Sprite& s_map, RenderWindow& window, Sprite& pumbasprite,
     window.draw(timonsprite);
     window.draw(haresprite);
     window.draw(foxsprite);
-    window.draw(hedgehogsprite);
     window.draw(bearsprite);
     window.draw(simbasprite);
     window.draw(zazusprite);
     window.draw(wolfsprite);
     window.draw(owlsprite);
+    window.draw(hedgehogsprite);
     window.display();
 }
 
@@ -163,9 +163,9 @@ void zoo_run(RenderWindow& window)
     hare hare("../Images/characters/hare.png", "hare.ogg", 1050, 200, 80, 0, 55, 34);
     bear bear("../Images/characters/bear.png", "bear.ogg", 100, 500, 0, 17, 55, 50);
     fox fox("../Images/characters/fox.png", "fox.ogg", 350, 500, 0, 140, 51, 35);
-    hedgehog hedgehog("../Images/characters/hedgehog.png", "hedgehog.ogg", 700, 500, 0, 67, 34, 34);
+    hedgehog hedgehog("../Images/characters/hedgehog.png", "hedgehog.ogg", 600, 500, 0, 67, 34, 34);
     wolf wolf("../Images/characters/wolf.png", "wolf.ogg", 1050, 500, 0, 100, 67, 44);
-    owl owl("../Images/characters/owl.png", "owl.ogg", 900, 500, 100, 100, 51, 48);
+    owl owl("../Images/characters/owl.png", "owl.ogg", 800, 500, 0, 0, 60, 43);
 
     float CurrentFrame = 0;
     Clock clock;
@@ -224,9 +224,9 @@ void zoo_run(RenderWindow& window)
         fox.control(fox, time, CurrentFrame, (dir + 5) % 4 + 4, zoo_map, fox_frames, mode);
         hare.control(hare, time, CurrentFrame, (dir + 6) % 4 + 4, zoo_map, hare_frames, mode);
 
-        owl.control(timon, time, CurrentFrame, (dir + 7) % 4 + 4, zoo_map, owl_frames, !mode);
-        wolf.control(timon, time, CurrentFrame, (dir + 7) % 4 + 4, zoo_map, wolf_frames, !mode);
-        hedgehog.control(timon, time, CurrentFrame, (dir + 8) % 4 + 4, zoo_map, hedgehog_frames, !mode);
+        owl.control(owl, time, CurrentFrame, (dir + 7) % 4 + 4, zoo_map, owl_frames, !mode);
+        wolf.control(wolf, time, CurrentFrame, (dir + 8) % 4 + 4, zoo_map, wolf_frames, !mode);
+        hedgehog.control(hedgehog, time, CurrentFrame, (dir + 9) % 4 + 4, zoo_map, hedgehog_frames, !mode);
 
         window.clear();
         draw_map(s_map, window, pumba.sprite, timon.sprite, zazu.sprite, bear.sprite,
