@@ -211,13 +211,12 @@ void zoo_run(RenderWindow& window)
 
         if (counter % 9000 ==0)
         {
-            int help_mode = std::rand() % 2;
-            if (help_mode == 1)
+            if (mode == NIGHT)
             {
                 mode = DAY;
                 std::cout << "----------------------------------DAY NOW! MORNING EVERYONE " << std::endl;
             }
-            else
+            else if (mode == DAY)
             {
                 mode = NIGHT;
                 std::cout << "----------------------------------NIGHT NOW " << std::endl;
