@@ -213,9 +213,15 @@ void zoo_run(RenderWindow& window)
         {
             int help_mode = std::rand() % 2;
             if (help_mode == 1)
+            {
                 mode = DAY;
+                std::cout << "----------------------------------DAY NOW! MORNING EVERYONE " << std::endl;
+            }
             else
+            {
                 mode = NIGHT;
+                std::cout << "----------------------------------NIGHT NOW " << std::endl;
+            }
         }
 
         pumba.control(pumba, time, CurrentFrame, dir, zoo_map, pumba_frames, mode);
